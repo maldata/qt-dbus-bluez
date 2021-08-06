@@ -84,7 +84,10 @@ class BleAdManager(QDBusAbstractInterface):
 
     def RegisterAdvertisement(self, ad_path):
         print("Registering {0}...".format(ad_path))
-        msg = self.call('RegisterAdvertisement', QDBusObjectPath(ad_path), {})
+        msg = self.call(QDBus.CallMode.NoBlock,
+                        'RegisterAdvertisement',
+                        QDBusObjectPath(ad_path),
+                        {})
         print("Call returned.")
         reply = QDBusReply(msg)
 
