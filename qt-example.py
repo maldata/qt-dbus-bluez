@@ -1,7 +1,7 @@
 import sys
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Q_CLASSINFO, QCoreApplication, QObject, QTimer
-from PyQt5.QtDBus import QDBus, QDBusAbstractInterface, QDBusReply, QDBusConnection, QDBusMessage, QDBusAbstractAdaptor, QDBusConnectionInterface, QDBusObjectPath, QDBusVariant
+from PySide6.QtCore import Slot, Property, ClassInfo, QCoreApplication, QObject, QTimer
+from PySide6.QtDBus import QDBus, QDBusAbstractInterface, QDBusReply, QDBusConnection, QDBusMessage, QDBusAbstractAdaptor, QDBusConnectionInterface, QDBusObjectPath, QDBusVariant
 
 
 class ExampleObject(QObject):
@@ -12,23 +12,22 @@ class ExampleObject(QObject):
         self._adapter2 = AnotherAdapter(self)
         self._type = 'peripheral'
 
-    @property
+    @Property(str)
     def type(self):
         return self._type
     
 
+@ClassInfo("D-Bus Interface", "com.github.maldata.sampleiface1")
 class ExampleAdapter(QDBusAbstractAdaptor):
-    Q_CLASSINFO("D-Bus Interface", "com.github.maldata.sampleiface1")
-
     def __init__(self, parent):
         super().__init__(parent)
         self.setAutoRelaySignals(True)
 
-    @pyqtProperty(str)
+    @Property(str)
     def SampleStringProp(self):
         return "whatever"
         
-    @pyqtSlot()
+    @Slot()
     def DoThing(self):
         pass
 
@@ -40,23 +39,23 @@ class AnotherAdapter(QDBusAbstractAdaptor):
         super().__init__(parent)
         self.setAutoRelaySignals(True)
 
-    @pyqtSlot()
+    @Slot()
     def Release(self):
         print('Releasing.')
 
-    @pyqtProperty(str)
+    @Property(str)
     def Type(self):
         return self.parent().type
 
-    @pyqtProperty(list)
+    @Property(list)
     def ServiceUUIDs(self):
         return ['180D', '180F']
 
-    @pyqtProperty(list)
+    @Property(list)
     def Includes(self):
         return ['tx-power']
 
-    @pyqtProperty(str)
+    @Property(str)
     def LocalName(self):
         return 'I am advertising!'
 
