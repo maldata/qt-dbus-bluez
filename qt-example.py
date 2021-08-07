@@ -68,9 +68,6 @@ class AnotherAdapter(QDBusAbstractAdaptor):
 #    def ServiceData(self):
 #        return {'9999': [0x00, 0x01, 0x02, 0x03, 0x04]}
 
-    
-    
-
 class BleAdManager(QDBusAbstractInterface):
     def __init__(self, dbus_obj_path, parent=None):
         self._ble_adapter_dbus_path = dbus_obj_path
