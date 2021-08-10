@@ -19,6 +19,19 @@ class ExampleObject(QObject):
 
 class ExampleAdapter(QDBusAbstractAdaptor):
     Q_CLASSINFO("D-Bus Interface", "com.github.maldata.sampleiface1")
+    Q_CLASSINFO('D-Bus Introspection', ''
+                '  <interface name="com.github.maldata.sampleiface1">\n'
+                '    <method name="DoThing" />\n'
+                '    <property access="read" type="s" name="SampleStringProp" />'
+                '    <property access="read" type="as" name="SampleStringListProp" />'
+                '    <property access="read" type="a{sv}" name="SampleStrStrDictProp" />'
+                '    <property access="read" type="a{sv}" name="SampleStrIntDictProp" />'
+                '  </interface>\n'
+                '')
+
+#"    <method name=\"addUser\">\n"
+#"      <arg direction=\"in\" type=\"s\" name=\"user\"/>\n"
+#"    </method>\n"
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -27,6 +40,20 @@ class ExampleAdapter(QDBusAbstractAdaptor):
     @pyqtProperty(str)
     def SampleStringProp(self):
         return "whatever"
+
+    @pyqtProperty(list)
+    def SampleStringListProp(self):
+        return ["thing1", "thing2"]
+
+    # We use QVariantMap for dictionaries with string keys
+    @pyqtProperty('QVariantMap')
+    def SampleStrStrDictProp(self):
+        return {'key1': 'value1', 'key2': 'value2'}
+
+    # We use QVariantMap for dictionaries with string keys
+    @pyqtProperty('QVariantMap')
+    def SampleStrIntDictProp(self):
+        return {'key': 4}
         
     @pyqtSlot()
     def DoThing(self):
@@ -35,7 +62,17 @@ class ExampleAdapter(QDBusAbstractAdaptor):
 
 class AnotherAdapter(QDBusAbstractAdaptor):
     Q_CLASSINFO("D-Bus Interface", "org.bluez.LEAdvertisement1")
-
+    Q_CLASSINFO('D-Bus Introspection', ''
+                '  <interface name="org.bluez.LEAdvertisement1">\n'
+                '    <method name="Release" />\n'
+                '    <property access="read" type="s" name="Type" />'
+                '    <property access="read" type="s" name="LocalName" />'
+                '    <property access="read" type="as" name="ServiceUUIDs" />'
+                '    <property access="read" type="as" name="Includes" />'
+                '    <property access="read" type="a{sv}" name="ServiceData" />'
+                '  </interface>\n'
+                '')
+    
     def __init__(self, parent):
         super().__init__(parent)
         self.setAutoRelaySignals(True)
@@ -59,14 +96,15 @@ class AnotherAdapter(QDBusAbstractAdaptor):
     @pyqtProperty(str)
     def LocalName(self):
         return 'I am advertising!'
-
-#    @pyqtProperty(dict)
+    
+    @pyqtProperty('QVariantMap')
+    def ServiceData(self):
+        return {'9999': [0x00, 0x01, 0x02, 0x03, 0x04]}
+    
+#    @pyqtProperty('QVariantMap')
 #    def ManufacturerData(self):
-#        return {0xffff: QDBusVariant([0x00, 0x01, 0x02, 0x03])}
-#
-#    @pyqtProperty(dict)
-#    def ServiceData(self):
-#        return {'9999': [0x00, 0x01, 0x02, 0x03, 0x04]}
+#        return {0xffff: [0x00, 0x01, 0x02, 0x03]}
+
 
 class BleAdManager(QDBusAbstractInterface):
     def __init__(self, dbus_obj_path, parent=None):
