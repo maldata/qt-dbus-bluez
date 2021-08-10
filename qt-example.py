@@ -19,16 +19,16 @@ class ExampleObject(QObject):
 
 class ExampleAdapter(QDBusAbstractAdaptor):
     Q_CLASSINFO("D-Bus Interface", "com.github.maldata.sampleiface1")
-    Q_CLASSINFO('D-Bus Introspection', ''
-                '  <interface name="com.github.maldata.sampleiface1">\n'
-                '    <method name="DoThing" />\n'
-                '    <property access="read" type="s" name="SampleStringProp" />'
-                '    <property access="read" type="as" name="SampleStringListProp" />'
-                '    <property access="read" type="a{sv}" name="SampleStrStrDictProp" />'
-                '    <property access="read" type="a{sv}" name="SampleStrIntDictProp" />'
-                '  </interface>\n'
-                '')
-
+#    Q_CLASSINFO('D-Bus Introspection', ''
+#                '  <interface name="com.github.maldata.sampleiface1">\n'
+#                '    <method name="DoThing" />\n'
+#                '    <property access="read" type="s" name="SampleStringProp" />'
+#                '    <property access="read" type="as" name="SampleStringListProp" />'
+#                '    <property access="read" type="a{sv}" name="SampleStrStrDictProp" />'
+#                '    <property access="read" type="a{sv}" name="SampleStrIntDictProp" />'
+#                '  </interface>\n'
+#                '')
+#
 #"    <method name=\"addUser\">\n"
 #"      <arg direction=\"in\" type=\"s\" name=\"user\"/>\n"
 #"    </method>\n"
@@ -41,7 +41,7 @@ class ExampleAdapter(QDBusAbstractAdaptor):
     def SampleStringProp(self):
         return "whatever"
 
-    @pyqtProperty(list)
+    @pyqtProperty('QStringList')
     def SampleStringListProp(self):
         return ["thing1", "thing2"]
 
@@ -54,6 +54,10 @@ class ExampleAdapter(QDBusAbstractAdaptor):
     @pyqtProperty('QVariantMap')
     def SampleStrIntDictProp(self):
         return {'key': 4}
+
+    @pyqtProperty('QVariantMap')
+    def SampleStdDict(self):
+        return {'keyA': 'smorg'}
         
     @pyqtSlot()
     def DoThing(self):
@@ -62,16 +66,16 @@ class ExampleAdapter(QDBusAbstractAdaptor):
 
 class AnotherAdapter(QDBusAbstractAdaptor):
     Q_CLASSINFO("D-Bus Interface", "org.bluez.LEAdvertisement1")
-    Q_CLASSINFO('D-Bus Introspection', ''
-                '  <interface name="org.bluez.LEAdvertisement1">\n'
-                '    <method name="Release" />\n'
-                '    <property access="read" type="s" name="Type" />'
-                '    <property access="read" type="s" name="LocalName" />'
-                '    <property access="read" type="as" name="ServiceUUIDs" />'
-                '    <property access="read" type="as" name="Includes" />'
-                '    <property access="read" type="a{sv}" name="ServiceData" />'
-                '  </interface>\n'
-                '')
+#    Q_CLASSINFO('D-Bus Introspection', ''
+#                '  <interface name="org.bluez.LEAdvertisement1">'
+#                '    <method name="Release" />'
+#                '    <property access="read" type="s" name="Type" />'
+#                '    <property access="read" type="s" name="LocalName" />'
+#                '    <property access="read" type="as" name="Includes" />'
+#                '    <property access="read" type="as" name="ServiceUUIDs" />'
+#                '  </interface>'
+#                '')
+#                '    <property access="read" type="a{sv}" name="ServiceData" />'
     
     def __init__(self, parent):
         super().__init__(parent)
@@ -84,23 +88,25 @@ class AnotherAdapter(QDBusAbstractAdaptor):
     @pyqtProperty(str)
     def Type(self):
         return self.parent().type
-
-    @pyqtProperty(list)
-    def ServiceUUIDs(self):
-        return ['180D', '180F']
-
-    @pyqtProperty(list)
-    def Includes(self):
-        return ['tx-power']
-
+    
     @pyqtProperty(str)
     def LocalName(self):
         return 'I am advertising!'
-    
-    @pyqtProperty('QVariantMap')
-    def ServiceData(self):
-        return {'9999': [0x00, 0x01, 0x02, 0x03, 0x04]}
-    
+
+    # Looks like we need to specify a QStringList (by string name, not by type...
+    # the type doesn't exist in pyqt!)
+    @pyqtProperty('QStringList')
+    def Includes(self):
+        return ['tx-power']
+
+    @pyqtProperty('QStringList')
+    def ServiceUUIDs(self):
+        return ['180D', '180F']
+
+#    @pyqtProperty('QVariantMap')
+#    def ServiceData(self):
+#        return {'9999': [0x00, 0x01, 0x02, 0x03, 0x04]}
+#    
 #    @pyqtProperty('QVariantMap')
 #    def ManufacturerData(self):
 #        return {0xffff: [0x00, 0x01, 0x02, 0x03]}

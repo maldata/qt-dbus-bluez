@@ -143,7 +143,7 @@ class TestAdvertisement(Advertisement):
         Advertisement.__init__(self, bus, index, 'peripheral')
         self.add_service_uuid('180D')
         self.add_service_uuid('180F')
-        #self.add_manufacturer_data(0xffff, [0x00, 0x01, 0x02, 0x03])
+        self.add_manufacturer_data(0xffff, [0x00, 0x01, 0x02, 0x03])
         #self.add_service_data('9999', [0x00, 0x01, 0x02, 0x03, 0x04])
         self.add_local_name('TestAdvertisement')
         self.include_tx_power = True
@@ -183,6 +183,7 @@ def main(timeout=0):
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
     bus = dbus.SystemBus()
+    bus.request_name("com.github.maldata.testservice1")
 
     adapter = find_adapter(bus)
     if not adapter:
