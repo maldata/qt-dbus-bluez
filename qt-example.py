@@ -58,7 +58,11 @@ class ExampleAdapter(QDBusAbstractAdaptor):
     @pyqtProperty('QVariantMap')
     def SampleStdDict(self):
         return {'keyA': 'smorg'}
-        
+
+    @pyqtProperty('QByteArray')
+    def SampleByteArray(self):
+        return b'\x0f\x0e\x0d\x0c\x0b'
+    
     @pyqtSlot()
     def DoThing(self):
         pass
