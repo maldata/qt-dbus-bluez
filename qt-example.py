@@ -143,7 +143,6 @@ class BleAdManager(QDBusAbstractInterface):
             print(reply.error().message())
             return None
 
-        
 
 class MainController(QObject):
     def __init__(self, app, parent=None):
@@ -156,7 +155,7 @@ class MainController(QObject):
         QTimer.singleShot(60000, self.shutdown)
 
         bus = QDBusConnection.systemBus()
-        obj_name="/com/github/maldata/TestObj1"
+        obj_name = "/com/github/maldata/TestObj1"
         result = bus.registerObject(obj_name, self._test_obj)
 
         ad_mgr = BleAdManager("/org/bluez/hci0")
@@ -166,6 +165,7 @@ class MainController(QObject):
         print("Shutdown")
         self._app.quit()
 
+
 def main():
     # Ensure that the D-Bus bus is available.
     bus = QDBusConnection.systemBus()
@@ -174,7 +174,7 @@ def main():
 
     # Claim a dbus name. If it's taken, this is already running. Don't run another instance.
     dbus_conn_iface = bus.interface()
-    service_name="com.github.maldata.testservice1"
+    service_name = "com.github.maldata.testservice1"
     r = dbus_conn_iface.registerService(service_name,
                                         QDBusConnectionInterface.DontQueueService,
                                         QDBusConnectionInterface.DontAllowReplacement)
