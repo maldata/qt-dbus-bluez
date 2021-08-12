@@ -57,6 +57,13 @@ class ExampleAdapter(QDBusAbstractAdaptor):
 
 class AnotherAdapter(QDBusAbstractAdaptor):
     Q_CLASSINFO("D-Bus Interface", "org.freedesktop.DBus.ObjectManager")
+    Q_CLASSINFO('D-Bus Introspection', ''
+                                       '  <interface name="org.freedesktop.DBus.ObjectManager">'
+                                       '    <method name="GetManagedObjects">'
+                                       '      <arg direction="out" type="a{oa{sa{sv}}}" name="objs" />'
+                                       '    </method>'
+                                       '  </interface>\n'
+                                       '')
     
     def __init__(self, parent):
         super().__init__(parent)
@@ -73,10 +80,16 @@ class AnotherAdapter(QDBusAbstractAdaptor):
         print(msg_in.member())
 
         arg = QDBusArgument()
-        arg.beginStructure()
-        arg.add('str', QMetaType.QString)
-        arg.add(7, QMetaType.UShort)
-        arg.endStructure()
+        arg.beginMap(QMetaType.QString, QMetaType.QString)
+        arg.beginMapEntry()
+        arg.add(QDBusObjectPath('/com/test1'))
+        arg.add('str1')
+        arg.endMapEntry()
+        arg.beginMapEntry()
+        arg.add(QDBusObjectPath('/com/test2'))
+        arg.add('str2')
+        arg.endMapEntry()
+        arg.endMap()
         reply = msg_in.createReply([arg])
         bus = QDBusConnection.systemBus()
         bus.send(reply)
