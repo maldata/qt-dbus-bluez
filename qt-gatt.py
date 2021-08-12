@@ -1,7 +1,7 @@
 import sys
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Q_CLASSINFO, QCoreApplication, QObject, QTimer
-from PyQt5.QtDBus import QDBus, QDBusAbstractInterface, QDBusReply, QDBusConnection, QDBusMessage, QDBusAbstractAdaptor, QDBusConnectionInterface, QDBusObjectPath, QDBusVariant
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Q_CLASSINFO, QCoreApplication, QObject, QTimer, QMetaType
+from PyQt5.QtDBus import QDBus, QDBusAbstractInterface, QDBusReply, QDBusConnection, QDBusMessage, QDBusAbstractAdaptor, QDBusConnectionInterface, QDBusObjectPath, QDBusVariant, QDBusArgument
 
 
 class ExampleObject(QObject):
@@ -62,13 +62,25 @@ class AnotherAdapter(QDBusAbstractAdaptor):
         super().__init__(parent)
         self.setAutoRelaySignals(True)
 
-    @pyqtSlot()
-    def GetManagedObjects(self):
+    @pyqtSlot(QDBusMessage)
+    def GetManagedObjects(self, msg_in):
         print("GLARRRRRRRRG")
+        print(msg_in)
+        print(msg_in.arguments())
+        print(msg_in.service())
+        print(msg_in.path())
+        print(msg_in.interface())
+        print(msg_in.member())
+
         arg = QDBusArgument()
-        reply = QDBusMessage.createReply(arg)
-        
-        
+        arg.beginStructure()
+        arg.add('str', QMetaType.QString)
+        arg.add(7, QMetaType.UShort)
+        arg.endStructure()
+        reply = msg_in.createReply([arg])
+        bus = QDBusConnection.systemBus()
+        bus.send(reply)
+
 
 class MainController(QObject):
     def __init__(self, app, parent=None):

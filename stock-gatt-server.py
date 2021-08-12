@@ -631,6 +631,7 @@ def find_adapter(bus):
 
     return None
 
+
 def main():
     global mainloop
 
