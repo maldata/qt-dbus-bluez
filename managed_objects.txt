@@ -1,0 +1,138 @@
+{
+    '/org/bluez/example/service0': {
+	'org.bluez.GattService1': {
+	    'Characteristics': [
+		'/org/bluez/example/service0/char0',
+		'/org/bluez/example/service0/char1',
+		'/org/bluez/example/service0/char2'
+	    ],
+	    'Primary': True,
+            'UUID': '0000180d-0000-1000-8000-00805f9b34fb'
+	}
+    },
+    '/org/bluez/example/service0/char0': {
+	'org.bluez.GattCharacteristic1': {
+	    'Descriptors': [],
+            'Flags': ['notify'],
+            'Service': '/org/bluez/example/service0',
+            'UUID': '00002a37-0000-1000-8000-00805f9b34fb'
+	}
+    },
+    '/org/bluez/example/service0/char1': {
+	'org.bluez.GattCharacteristic1': {
+	    'Descriptors': [],
+            'Flags': ['read'],
+            'Service': '/org/bluez/example/service0',
+            'UUID': '00002a38-0000-1000-8000-00805f9b34fb'
+	}
+    },
+    '/org/bluez/example/service0/char2': {
+	'org.bluez.GattCharacteristic1': {
+	    'Descriptors': [],
+            'Flags': ['write'],
+            'Service': '/org/bluez/example/service0',
+            'UUID': '00002a39-0000-1000-8000-00805f9b34fb'
+	}
+    },
+    '/org/bluez/example/service1': {
+	'org.bluez.GattService1': {
+	    'Characteristics': [
+		'/org/bluez/example/service1/char0'
+	    ],
+            'Primary': True,
+            'UUID': '180f'
+	}
+    },
+    '/org/bluez/example/service1/char0': {
+	'org.bluez.GattCharacteristic1': {
+	    'Descriptors': [],
+            'Flags': ['read', 'notify'],
+	    'Service': '/org/bluez/example/service1',
+            'UUID': '2a19'
+	}
+    },
+    '/org/bluez/example/service2': {
+	'org.bluez.GattService1': {
+	    'Characteristics': [
+		'/org/bluez/example/service2/char0',
+                '/org/bluez/example/service2/char1',
+                '/org/bluez/example/service2/char2'
+	    ],
+            'Primary': True,
+            'UUID': '12345678-1234-5678-1234-56789abcdef0'
+	}
+    },
+    '/org/bluez/example/service2/char0': {
+	'org.bluez.GattCharacteristic1': {
+	    'Descriptors': [
+		'/org/bluez/example/service2/char0/desc0',
+                '/org/bluez/example/service2/char0/desc1'],
+            'Flags': ['read', 'write', 'writable-auxiliaries'],
+            'Service': '/org/bluez/example/service2',
+            'UUID': '12345678-1234-5678-1234-56789abcdef1'
+	}
+    },
+    '/org/bluez/example/service2/char0/desc0': {
+	'org.bluez.GattDescriptor1': {
+	    'Characteristic': '/org/bluez/example/service2/char0',
+            'Flags': ['read', 'write'],
+            'UUID': '12345678-1234-5678-1234-56789abcdef2'
+	}
+    },
+    '/org/bluez/example/service2/char0/desc1': {
+	'org.bluez.GattDescriptor1': {
+	    'Characteristic': '/org/bluez/example/service2/char0',
+            'Flags': ['read', 'write'],
+            'UUID': '2901'
+	}
+    },
+    '/org/bluez/example/service2/char1': {
+	'org.bluez.GattCharacteristic1': {
+	    'Descriptors': [
+		'/org/bluez/example/service2/char1/desc2',
+                '/org/bluez/example/service2/char1/desc3'],
+            'Flags': ['encrypt-read', 'encrypt-write'],
+            'Service': '/org/bluez/example/service2',
+            'UUID': '12345678-1234-5678-1234-56789abcdef3'
+	}
+    },
+    '/org/bluez/example/service2/char1/desc2': {
+	'org.bluez.GattDescriptor1': {
+	    'Characteristic': '/org/bluez/example/service2/char1',
+            'Flags': ['encrypt-read', 'encrypt-write'],
+            'UUID': '12345678-1234-5678-1234-56789abcdef4'
+	}
+    },
+    '/org/bluez/example/service2/char1/desc3': {
+	'org.bluez.GattDescriptor1': {
+	    'Characteristic': '/org/bluez/example/service2/char1',
+            'Flags': ['read', 'write'],
+            'UUID': '2901'
+	}
+    },
+    '/org/bluez/example/service2/char2': {
+	'org.bluez.GattCharacteristic1': {
+	    'Descriptors': [
+		'/org/bluez/example/service2/char2/desc2',
+                '/org/bluez/example/service2/char2/desc3'
+	    ],
+            'Flags': ['secure-read', 'secure-write'],
+            'Service': '/org/bluez/example/service2',
+            'UUID': '12345678-1234-5678-1234-56789abcdef5'
+	}
+    },
+    '/org/bluez/example/service2/char2/desc2': {
+	'org.bluez.GattDescriptor1': {
+	    'Characteristic': '/org/bluez/example/service2/char2',
+            'Flags': ['secure-read', 'secure-write'],
+            'UUID': '12345678-1234-5678-1234-56789abcdef6'
+	}
+    },
+    '/org/bluez/example/service2/char2/desc3': {
+	'org.bluez.GattDescriptor1': {
+	    'Characteristic': '/org/bluez/example/service2/char2',
+            'Flags': ['read', 'write'],
+            'UUID': '2901'
+	}
+    }
+}
