@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Q_CLASSINFO, QCoreApplication, QObject, QTimer, QMetaType
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Q_CLASSINFO, QCoreApplication, QObject, QTimer, QMetaType, QVariant
 from PyQt5.QtDBus import QDBus, QDBusAbstractInterface, QDBusReply, QDBusConnection, QDBusMessage, QDBusAbstractAdaptor, QDBusConnectionInterface, QDBusObjectPath, QDBusVariant, QDBusArgument
 
 
@@ -65,7 +65,7 @@ class AnotherAdapter(QDBusAbstractAdaptor):
                                        '  </interface>\n'
                                        '')
     
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.setAutoRelaySignals(True)
 
@@ -82,12 +82,16 @@ class AnotherAdapter(QDBusAbstractAdaptor):
         arg = QDBusArgument()
         arg.beginMap(QMetaType.QString, QMetaType.QString)
         arg.beginMapEntry()
-        arg.add(QDBusObjectPath('/com/test1'))
-        arg.add('str1')
-        arg.endMapEntry()
-        arg.beginMapEntry()
-        arg.add(QDBusObjectPath('/com/test2'))
-        arg.add('str2')
+        arg.add('/com/test1')
+        arg.add('test test test')
+
+        # arg.beginMap(QMetaType.QString, QMetaType.QVariantMap)
+        # arg.beginMapEntry()
+        # arg.add(QVariant("asdfsdg"))
+        # arg.add(QVariant("adfhjedghm"))
+        # arg.endMapEntry()
+        # arg.endMap()
+
         arg.endMapEntry()
         arg.endMap()
         reply = msg_in.createReply([arg])
@@ -103,7 +107,7 @@ class MainController(QObject):
         
     def startup(self):
         print("Startup")
-        QTimer.singleShot(60000, self.shutdown)
+        QTimer.singleShot(20000, self.shutdown)
 
         bus = QDBusConnection.systemBus()
         obj_name = "/com/github/maldata/TestObj1"
