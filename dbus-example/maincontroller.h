@@ -4,13 +4,15 @@
 #include <QObject>
 #include <QCoreApplication>
 
+#define SERVICE_NAME "com.github.maldata.testservice1"
+
 class MainController : public QObject
 {
     Q_OBJECT
 public:
     explicit MainController(QCoreApplication &app, QObject *parent = nullptr);
 
-    void initialize();
+    bool initialize();
     void deinitialize();
 
 signals:
